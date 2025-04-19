@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Music</title>
+    <link rel="icon" href="bg1.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #fff9f9 0%, #ffe8e8 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 192, 203, 0.3);
+        }
+        
+        h1 {
+            color: #d23669;
+            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+        }
+        
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 192, 203, 0.3);
+        }
+        
+        .form-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .tab-btn {
+            padding: 12px 25px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #888;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .tab-btn.active {
+            color: #d23669;
+        }
+        
+        .tab-btn.active:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #d23669;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            border-color: #d23669;
+            outline: none;
+        }
+        
+        .form-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #d23669 0%, #ff4757 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(210, 54, 105, 0.2);
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(210, 54, 105, 0.3);
+        }
+        
+        #showListBtn {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            box-shadow: 0 4px 8px rgba(46, 204, 113, 0.2);
+            margin-top: 20px;
+        }
+        
+        #showListBtn:hover {
+            box-shadow: 0 6px 12px rgba(46, 204, 113, 0.3);
+        }
+        
+        .music-list {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+            display: none;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 192, 203, 0.3);
+        }
+        
+        .music-list h2 {
+            margin-top: 0;
+            color: #d23669;
+            font-family: 'Playfair Display', serif;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        
+        .music-filters {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .filter-btn {
+            background: #f0f0f0;
+            color: #555;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active {
+            background: #d23669;
+            color: white;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        th {
+            background-color: #fafafa;
+            font-weight: 700;
+            color: #d23669;
+        }
+        
+        tr:hover {
+            background-color: #fff5f7;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #d23669 0%, #a52a52 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .social-links {
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            color: white;
+            margin: 0 15px;
+            font-size: 22px;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .social-links a:hover {
+            color: #ffccd5;
+            transform: translateY(-3px);
+        }
+        
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+            animation: fadeIn 0.5s;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        #countdown-timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+            color: white;
+            background-color: #d23669;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(210, 54, 105, 0.3);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #countdown-timer:hover {
+            transform: scale(1.05);
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #d23669;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header {
+                padding: 20px;
+            }
+            
+            .form-container, .music-list {
+                padding: 20px;
+            }
+            
+            .form-tabs {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                text-align: left;
+                padding: 10px 15px;
+            }
+            
+            th, td {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            #countdown-timer {
+                font-size: 1.2rem;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- (Keep all your existing HTML) -->
+    <div class="container">
+        <header>
+            <h1>Build Our Perfect Wedding Playlist - One Song at a Time</h1>
+            <p>Help us create the perfect soundtrack for our special day!</p>
+            <div id="countdown-timer"></div>
+        </header>
+        
+        <div class="form-container">
+            <div class="form-tabs">
+                <button class="tab-btn active" data-tab="dj-night">DJ Night Songs</button>
+                <button class="tab-btn" data-tab="reception">Reception Background</button>
+            </div>
+            
+            <div id="dj-night" class="tab-content active">
+                <h2>Add Dance Floor Hits</h2>
+                <p>Suggest songs you want to dance to during our party!</p>
+                <form id="djForm">
+                    <div class="form-group">
+                        <label for="djName">Your Name:</label>
+                        <input type="text" id="djName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="djSongName">Song Name:</label>
+                        <input type="text" id="djSongName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="djMusicLink">Music Link (YouTube, Spotify, etc.):</label>
+                        <input type="text" id="djMusicLink" required>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit">Submit Dance Song</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="reception" class="tab-content">
+                <h2>Add Reception Background Music</h2>
+                <p>Suggest relaxing songs for Reception</p>
+                <form id="receptionForm">
+                    <div class="form-group">
+                        <label for="receptionName">Your Name:</label>
+                        <input type="text" id="receptionName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="receptionSongName">Song Name:</label>
+                        <input type="text" id="receptionSongName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="receptionMusicLink">Music Link (YouTube, Spotify, etc.):</label>
+                        <input type="text" id="receptionMusicLink" required>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit">Submit Background Song</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" id="showListBtn">View All Music Requests</button>
+            </div>
+        </div>
+        
+        <div class="music-list" id="musicList">
+            <h2>Our Wedding Music Collection</h2>
+            <div class="music-filters">
+                <button class="filter-btn active" data-filter="all">All Songs</button>
+                <button class="filter-btn" data-filter="dj-night">DJ Night</button>
+                <button class="filter-btn" data-filter="reception">Reception</button>
+            </div>
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <span>Loading music list...</span>
+            </div>
+            <table id="musicTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Name</th>
+                        <th>Song</th>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody id="musicTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Designed & Developed with 💖 by SAI VENKAT</p>
+        <div class="social-links">
+            <a href="https://saivenkatachala.github.io/SAIVENKAT/" target="_blank"><i class="fa-solid fa-briefcase"></i></a>
+            <a href="https://github.com/saivenkatachala" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/a-sai-venkat-509239226/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.instagram.com/its_saivenkat/" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+    <script>
+        // Tab functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const tabId = btn.getAttribute('data-tab');
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Form submissions
+        document.getElementById('djForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitSong('dj-night');
+        });
+        
+        document.getElementById('receptionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitSong('reception');
+        });
+        
+        function submitSong(category) {
+            const formId = category === 'dj-night' ? 'djForm' : 'receptionForm';
+            const form = document.getElementById(formId);
+            
+            const name = document.getElementById(`${category === 'dj-night' ? 'dj' : 'reception'}Name`).value;
+            const songName = document.getElementById(`${category === 'dj-night' ? 'dj' : 'reception'}SongName`).value;
+            const musicLink = document.getElementById(`${category === 'dj-night' ? 'dj' : 'reception'}MusicLink`).value;
+            
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.innerHTML = `<span class="spinner"></span> Submitting...`;
+            submitBtn.disabled = true;
+            
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbxy4IpHATcgsYJANNQ1SDab_XbElG7bwew-MNmIxP3t1X3QOJBsrPUSgCuUlgrwvryA/exec';
+            
+            fetch(scriptUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    category: category,
+                    name: name,
+                    songName: songName,
+                    musicLink: musicLink
+                })
+            })
+            .then(() => {
+                let successMsg = form.querySelector('.success-message');
+                if (!successMsg) {
+                    successMsg = document.createElement('div');
+                    successMsg.className = 'success-message';
+                    form.appendChild(successMsg);
+                }
+                
+                const categoryName = category === 'dj-night' ? 'Dance Floor' : 'Reception Background';
+                successMsg.innerHTML = `🎉 <strong>${songName}</strong> added to ${categoryName} list!`;
+                successMsg.style.display = 'block';
+                form.reset();
+                
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 5000);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Submission failed. Please try again.');
+            })
+            .finally(() => {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        }
+        
+        // Music list fetching
+        async function showMusicList(filter = 'all') {
+            const musicList = document.getElementById('musicList');
+            const loading = document.getElementById('loading');
+            const musicTable = document.getElementById('musicTable');
+            const tableBody = document.getElementById('musicTableBody');
+            
+            musicList.style.display = 'block';
+            loading.style.display = 'flex';
+            musicTable.style.display = 'none';
+            tableBody.innerHTML = '';
+            
+            try {
+
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycbxy4IpHATcgsYJANNQ1SDab_XbElG7bwew-MNmIxP3t1X3QOJBsrPUSgCuUlgrwvryA/exec?action=getSongs';
+                const response = await fetch(scriptUrl);
+                const songs = await response.json();
+                
+                songs.forEach(song => {
+                    if (filter !== 'all' && song.category !== filter) return;
+                    
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${song.category === 'dj-night' ? 'DJ Night' : 'Reception'}</td>
+                        <td>${song.name}</td>
+                        <td>${song.songName}</td>
+                        <td><a href="${song.musicLink}" target="_blank">Listen</a></td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+                
+                loading.style.display = 'none';
+                musicTable.style.display = 'table';
+            } catch (error) {
+                console.error('Error:', error);
+                loading.innerHTML = '<span style="color:red">Failed to load music list.</span>';
+            }
+        }
+        
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                showMusicList(btn.dataset.filter);
+            });
+        });
+        
+        // Initialize
+        document.getElementById('showListBtn').addEventListener('click', () => showMusicList());
+        
+        // Countdown Timer
+        function updateCountdown() {
+            const weddingDate = new Date("2025-04-29T00:00:00");
+            const now = new Date();
+            const diff = weddingDate - now;
+            
+            if (diff <= 0) {
+                document.getElementById('countdown-timer').innerHTML = "Today's the day! 🎉";
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('countdown-timer').innerHTML = 
+                `${days}d ${hours}h ${minutes}m ${seconds}s until our DJ Night!`;
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
