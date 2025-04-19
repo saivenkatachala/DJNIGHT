@@ -475,8 +475,8 @@
             });
         });
         
-        // Form submissions
-        document.getElementById('djForm').addEventListener('submit', function(e) {
+       // Form submissions
+       document.getElementById('djForm').addEventListener('submit', function(e) {
             e.preventDefault();
             submitSong('dj-night');
         });
@@ -499,10 +499,11 @@
             submitBtn.innerHTML = `<span class="spinner"></span> Submitting...`;
             submitBtn.disabled = true;
             
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbxy4IpHATcgsYJANNQ1SDab_XbElG7bwew-MNmIxP3t1X3QOJBsrPUSgCuUlgrwvryA/exec';
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbwgezYTL8ivQasnJGG_JTy1gtkgwQd4z_sSWiOCx_DPsd2porv1Tc_iSkZ8HeH2p5lA/exec';
             
             fetch(scriptUrl, {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -540,6 +541,9 @@
             });
         }
         
+
+
+        
         // Music list fetching
         async function showMusicList(filter = 'all') {
             const musicList = document.getElementById('musicList');
@@ -554,7 +558,7 @@
             
             try {
 
-                const scriptUrl = 'https://script.google.com/macros/s/AKfycbxy4IpHATcgsYJANNQ1SDab_XbElG7bwew-MNmIxP3t1X3QOJBsrPUSgCuUlgrwvryA/exec?action=getSongs';
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycbwgezYTL8ivQasnJGG_JTy1gtkgwQd4z_sSWiOCx_DPsd2porv1Tc_iSkZ8HeH2p5lA/exec?action=getSongs';
                 const response = await fetch(scriptUrl);
                 const songs = await response.json();
                 
